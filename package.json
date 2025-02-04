@@ -1,0 +1,18 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm run start --prefix client",
+    "server": "nodemon server/index.js",
+    "build": "npm run build --prefix client",
+    "install-client": "npm install --prefix client", 
+    "install-server": "npm install --prefix server", 
+    "deploy": "npm run build && npm start" 
+  },
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
