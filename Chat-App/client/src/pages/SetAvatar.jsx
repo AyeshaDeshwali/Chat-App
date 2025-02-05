@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { setAvatarRoute } from "../utils/APIRoutes";
 
 export default function SetAvatar() {
-  const api = `https://api.dicebear.com/7.x/bottts/svg?seed`;
+  const api = `https://api.dicebear.com/7.x/bottts/svg?seed=`;
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,32 +39,30 @@ export default function SetAvatar() {
       });
 
       if (data.isSet) {
-        // Update localStorage properly
         user.isAvatarImageSet = true;
         user.avatarImage = data.image;
         localStorage.setItem("chat-app-user", JSON.stringify(user));
-        navigate("/"); // Navigate to home page after successful avatar set
+        navigate("/"); 
       } else {
         toast.error("Error setting avatar. Please try again.", toastOptions);
       }
     }
   };
 
-useEffect(() => {
-  const fetchAvatars = async () => {
-    const data = [];
-    // 4 different avatars ko unique random seed ke saath fetch karenge
-    for (let i = 0; i < 4; i++) {
-      const randomSeed = Math.round(Math.random() * 1000000); // Seed ko large range dena
-      const image = await axios.get(`${api}/${randomSeed}`);
-      data.push(image.data);
-    }
-    setAvatars(data);
-    setIsLoading(false);
-  };
-  fetchAvatars();
-}, []);
-
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      const data = [];
+      // 4 different avatars ko unique random seed ke saath fetch karenge
+      for (let i = 0; i < 4; i++) {
+        const randomSeed = Math.random().toString(36).substring(7); // Generate random seed
+        const image = `${api}${randomSeed}`; // Create the API URL with the random seed
+        data.push(image);
+      }
+      setAvatars(data);
+      setIsLoading(false);
+    };
+    fetchAvatars();
+  }, []);
 
   return (
     <>
@@ -86,17 +84,13 @@ useEffect(() => {
               return (
                 <div
                   key={index}
-                  className={`avatar ${
-                    selectedAvatar === index ? "selected" : ""
-                  }`}
+                  className={`avatar ${selectedAvatar === index ? "selected" : ""}`}
                   onClick={() => setSelectedAvatar(index)}
                 >
-                 <img
-  src={`data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(avatar)))}`}
-  alt="avatar"
-/>
-
-
+                  <img
+                    src={avatar}
+                    alt="avatar"
+                  />
                 </div>
               );
             })}
