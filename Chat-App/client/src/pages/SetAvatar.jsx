@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Buffer } from "buffer";
-// import loader from "../assets/loaderfull.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { setAvatarRoute } from "../utils/APIRoutes";
 
 export default function SetAvatar() {
-  const api = `https://api.multiavatar.com/4645646`;
+  const api = `https://api.dicebear.com/7.x/bottts/svg?seed`;
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,8 +38,6 @@ export default function SetAvatar() {
         avatarImage: avatars[selectedAvatar],
       });
 
-      console.log(data);
-
       if (data.isSet) {
         // Update localStorage properly
         user.isAvatarImageSet = true;
@@ -58,11 +54,8 @@ export default function SetAvatar() {
     const fetchAvatars = async () => {
       const data = [];
       for (let i = 0; i < 4; i++) {
-        const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}`
-        );
-        const buffer = new Buffer(image.data);
-        data.push(buffer.toString("base64"));
+        const image = await axios.get(`${api}/${Math.round(Math.random() * 1000)}`);
+        data.push(image.data);
       }
       setAvatars(data);
       setIsLoading(false);
@@ -74,11 +67,6 @@ export default function SetAvatar() {
     <>
       {isLoading ? (
         <Container>
-          {/* <img
-            src="https://cdn.pixabay.com/animation/2023/11/30/10/11/10-11-02-622_512.gif"
-            alt="loader"
-            className="loader"
-          />{" "} */}
           <img
             src="https://cdn.pixabay.com/animation/2023/11/09/03/05/03-05-45-320_512.gif"
             alt="loader"
@@ -101,7 +89,7 @@ export default function SetAvatar() {
                   onClick={() => setSelectedAvatar(index)}
                 >
                   <img
-                    src={`data:image/svg+xml;base64,${avatar}`}
+                    src={`data:image/svg+xml;base64,${btoa(avatar)}`}
                     alt="avatar"
                   />
                 </div>
