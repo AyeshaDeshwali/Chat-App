@@ -50,18 +50,21 @@ export default function SetAvatar() {
     }
   };
 
-  useEffect(() => {
-    const fetchAvatars = async () => {
-      const data = [];
-      for (let i = 0; i < 4; i++) {
-        const image = await axios.get(`${api}/${Math.round(Math.random() * 1000)}`);
-        data.push(image.data);
-      }
-      setAvatars(data);
-      setIsLoading(false);
-    };
-    fetchAvatars();
-  }, []);
+useEffect(() => {
+  const fetchAvatars = async () => {
+    const data = [];
+    // 4 different avatars ko unique random seed ke saath fetch karenge
+    for (let i = 0; i < 4; i++) {
+      const randomSeed = Math.round(Math.random() * 1000000); // Seed ko large range dena
+      const image = await axios.get(`${api}/${randomSeed}`);
+      data.push(image.data);
+    }
+    setAvatars(data);
+    setIsLoading(false);
+  };
+  fetchAvatars();
+}, []);
+
 
   return (
     <>
