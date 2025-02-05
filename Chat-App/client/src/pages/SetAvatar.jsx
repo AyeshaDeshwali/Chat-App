@@ -88,10 +88,11 @@ export default function SetAvatar() {
                   }`}
                   onClick={() => setSelectedAvatar(index)}
                 >
-                  <img
-  src={`data:image/svg+xml;base64,${Buffer.from(avatar, 'utf-8').toString('base64')}`}
+                 <img
+  src={`data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(avatar)))}`}
   alt="avatar"
 />
+
 
                 </div>
               );
