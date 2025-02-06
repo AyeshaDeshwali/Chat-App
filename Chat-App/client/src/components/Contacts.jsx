@@ -6,6 +6,7 @@ export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+console.log("Current User Image:", currentUserImage);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -76,15 +77,13 @@ export default function Contacts({ contacts, changeChat }) {
           </div>
           <div className="current-user">
             <div className="avatar">
-              <img
-                src={`data:image/svg+xml;base64,${currentUserImage}`}
-                alt="avatar"
-              />
+             <img src={currentUserImage} alt="avatar" />
             </div>
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>
           </div>
+          
         </Container>
       )}
     </>
