@@ -34,9 +34,12 @@ export default function SetAvatar() {
       const user = JSON.parse(localStorage.getItem("chat-app-user"));
       console.log("Avatar Data:", avatars[selectedAvatar]);
 
-      const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
-        avatarImage: avatars[selectedAvatar],
-      });
+    const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+  avatarImage: avatars[selectedAvatar], // URL ko base64 me convert karo agar zaroori ho
+});
+user.avatarImage = avatars[selectedAvatar]; // Avatar ko user object me update karo
+localStorage.setItem("chat-app-user", JSON.stringify(user));
+
 
       if (data.isSet) {
         user.isAvatarImageSet = true;
