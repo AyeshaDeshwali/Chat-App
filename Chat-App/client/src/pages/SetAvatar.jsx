@@ -27,30 +27,29 @@ export default function SetAvatar() {
     }
   }, []);
 
-  const setProfilePicture = async () => {
-    if (selectedAvatar === undefined) {
-      toast.error("Please select an avatar", toastOptions);
-    } else {
-      const user = JSON.parse(localStorage.getItem("chat-app-user"));
-      console.log("Avatar Data:", avatars[selectedAvatar]);
+const setProfilePicture = async () => {
+  if (selectedAvatar === undefined) {
+    toast.error("Please select an avatar", toastOptions);
+    return;
+  }
 
-    const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
-  avatarImage: avatars[selectedAvatar], // URL ko base64 me convert karo agar zaroori ho
-});
-user.avatarImage = avatars[selectedAvatar]; // Avatar ko user object me update karo
-localStorage.setItem("chat-app-user", JSON.stringify(user));
+  const user = JSON.parse(localStorage.getItem("chat-app-user"));
+  console.log("Avatar Data:", avatars[selectedAvatar]);
 
+  const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+    avatarImage: avatars[selectedAvatar],
+  });
 
-      if (data.isSet) {
-        user.isAvatarImageSet = true;
-        user.avatarImage = data.image;
-        localStorage.setItem("chat-app-user", JSON.stringify(user));
-        navigate("/"); 
-      } else {
-        toast.error("Error setting avatar. Please try again.", toastOptions);
-      }
-    }
-  };
+  if (data.isSet) {
+    user.isAvatarImageSet = true;
+    user.avatarImage = avatars[selectedAvatar]; // Ensure correct image is stored
+    localStorage.setItem("chat-app-user", JSON.stringify(user));
+    navigate("/"); 
+  } else {
+    toast.error("Error setting avatar. Please try again.", toastOptions);
+  }
+};
+
 
   useEffect(() => {
     const fetchAvatars = async () => {
