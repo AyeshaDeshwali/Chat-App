@@ -16,6 +16,7 @@ export default function ChatInput({ handleSendMsg }) {
     let message = msg;
     message += emojiObject.emoji;
     setMsg(message);
+    setMsg((prevMsg) => prevMsg + emojiObject.emoji);
   };
 
   const sendChat = (event) => {
@@ -23,6 +24,7 @@ export default function ChatInput({ handleSendMsg }) {
     if (msg.length > 0) {
       handleSendMsg(msg);
       setMsg("");
+      setShowEmojiPicker(false);
     }
   };
 
