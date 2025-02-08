@@ -70,7 +70,10 @@ const Chat = () => {
   if (!currentUser) {
     return null; // Return nothing if currentUser is not yet set
   }
-
+  const handleLogout = () => {
+    localStorage.removeItem("chat-app-user"); // Remove user data
+    navigate("/login"); // Redirect to login page
+  };
   return (
     <Container>
       <div className="container">
@@ -78,8 +81,8 @@ const Chat = () => {
           contacts={contacts}
           currentUser={currentUser}
           changeChat={(chat) => setCurrentChat(chat)}
+          handleLogout={handleLogout} // ✅ Logout function pass ho raha hai
         />
-
         {currentChat === undefined ? (
           <Welcome currentUser={currentUser} />
         ) : (
