@@ -211,7 +211,7 @@ const Container = styled.div`
   grid-template-rows: 10% 80% 10%;
   gap: 0.1rem;
   overflow: hidden;
-
+  position: relative;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;
   }
@@ -302,6 +302,7 @@ const Container = styled.div`
   .chat-messages {
     padding: 1rem 2rem;
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     gap: 1rem;
     overflow: auto;
@@ -420,6 +421,8 @@ const Modal = styled.div`
 
   .modal-buttons button:last-child {
     background: rgb(44, 27, 122);
+    box-shadow: 0 3px 8px rgba(124, 122, 122, 0.73);
+
     color: white;
   }
 
