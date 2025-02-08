@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
 import Logout from "./Logout";
+import { useNavigate } from "react-router-dom";
 
 export default function Contacts({ contacts, changeChat, handleLogout }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -11,7 +12,7 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null); // Reference for dropdown
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
       const storedData = localStorage.getItem(
@@ -55,6 +56,15 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
   const filteredContacts = contacts.filter((contact) =>
     contact.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const handleLogoutClick = () => {
+    setShowLogoutPopup(true);
+    setMenuOpen(false);
+  };
+
+  const confirmLogout = async () => {
+    setShowLogoutPopup(false);
+    await handleLogout(); // ✅ Now this function is properly passed
+  };
 
   return (
     <>
@@ -79,15 +89,8 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
                     <li>New Group</li>
                     <li>Starred Messages</li>
                     <li>Select Chats</li>
-                    <li onClick={handleLogout}>Logout</li>
+                    <li onClick={handleLogoutClick}>Logout</li>
                   </ul>
-                </div>
-              )}
-              {showLogoutPopup && (
-                <div className="logout-popup">
-                  <p>Are you sure you want to logout?</p>
-                  <button onClick={handleLogout}>Yes</button>
-                  <button onClick={() => setShowLogoutPopup(false)}>No</button>
                 </div>
               )}
             </div>
@@ -133,6 +136,25 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
               <h2>{currentUserName}</h2>
             </div>
           </div>
+          {showLogoutPopup && (
+            <div className="logout-popup">
+              <div className="popup-box">
+                <h3>Lout out?</h3>
+                <p>Are you sure you want to logout?</p>
+                <div className="logout-btns">
+                  <button
+                    className="nobtn"
+                    onClick={() => setShowLogoutPopup(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button className="yesbtn" onClick={confirmLogout}>
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </Container>
       )}
     </>
@@ -339,18 +361,67 @@ const Container = styled.div`
   }
   .logout-popup {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(5px); /* Blur effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .popup-box {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     text-align: center;
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
+  .logout-popup h3 {
+    font-size: 22px;
+    color: #000;
+    margin-bottom: 15px;
+  }
+  .logout-popup p {
+    font-size: 16px;
+    color: rgb(102, 102, 104);
+    margin-bottom: 20px;
+  }
+
+  .logout-popup .logout-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
   .logout-popup button {
-    margin: 10px;
-    padding: 8px 16px;
+    padding: 10px 20px;
     cursor: pointer;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+  }
+
+  .logout-popup .yesbtn {
+    background-color: rgb(44, 27, 122);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 17px;
+    box-shadow: 0 3px 8px rgba(124, 122, 122, 0.73);
+  }
+  .logout-popup .nobtn {
+    background: #fff;
+    color: #333;
+    margin-right: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 50px;
+    font-size: 17px;
   }
 `;
