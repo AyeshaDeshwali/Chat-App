@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import styled from "styled-components";
@@ -7,12 +7,13 @@ import Picker from "emoji-picker-react";
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiPickerRef = useRef(null); // Reference for Emoji Picker
 
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
- const handleEmojiClick = (emojiObject) => {
+  const handleEmojiClick = (emojiObject) => {
     let message = msg;
     message += emojiObject.emoji;
     setMsg((prevMsg) => prevMsg + emojiObject.emoji);
@@ -27,13 +28,32 @@ export default function ChatInput({ handleSendMsg }) {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
   return (
     <Container>
       <div className="button-container">
         <div className="emoji">
           <BsEmojiSmileFill onClick={handleEmojiPickerhideShow} />
           {showEmojiPicker && (
-            <EmojiPickerWrapper>
+            <EmojiPickerWrapper ref={emojiPickerRef}>
               <Picker onEmojiClick={handleEmojiClick} />
             </EmojiPickerWrapper>
           )}
@@ -54,17 +74,18 @@ export default function ChatInput({ handleSendMsg }) {
     </Container>
   );
 }
-
+// 080420;
 const Container = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 5% 95%;
-  background-color: #080420;
+  background-color: rgba(19, 19, 63, 0.9);
   padding: 0 2rem;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     padding: 0 1rem;
     gap: 1rem;
   }
+
   .button-container {
     display: flex;
     align-items: center;
@@ -105,9 +126,10 @@ const Container = styled.div`
       padding: 0.3rem 2rem;
       border-radius: 2rem;
       display: flex;
+      cursor: pointer;
       justify-content: center;
       align-items: center;
-      background-color: #9a86f3;
+      background-color: rgb(137, 118, 221);
       border: none;
       @media screen and (min-width: 720px) and (max-width: 1080px) {
         padding: 0.3rem 1rem;
@@ -122,6 +144,7 @@ const Container = styled.div`
     }
   }
 `;
+// 080420;
 const EmojiPickerWrapper = styled.div`
   position: absolute;
   top: -465px; /* Adjust this as necessary to position the picker */
