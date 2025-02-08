@@ -1,12 +1,13 @@
-// In messagesRoutes.js
+// Backend: Add Clear Chat Route in messagesRoutes.js
 const {
   getAllMessages,
   addMessage,
+  clearMessages,
 } = require("../controllers/messageController");
 const router = require("express").Router();
 
-// Correcting GET and POST routes
-router.get("/getmsg", getAllMessages); // This is to fetch messages
-router.post("/addmsg", addMessage); // This is for adding new messages
+router.get("/getmsg", getAllMessages);
+router.post("/addmsg", addMessage);
+router.post("/clearchat", clearMessages); // New Route for Clearing Chat
 
 module.exports = router;
