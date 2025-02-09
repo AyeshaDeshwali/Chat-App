@@ -144,29 +144,54 @@ const Container = styled.div`
     }
   }
 `;
-// 080420;
 const EmojiPickerWrapper = styled.div`
   position: absolute;
-  top: -465px; /* Adjust this as necessary to position the picker */
-  left: -20px; /* Adjust if needed 
-  background-color: #080420;
-  border: 2px solid #9a86f3;
-  z-index: 3;
-  padding: 10px;
+  bottom: 50px;
+  border: 2px solid rgba(218, 215, 215, 0.83);
+  box-shadow: 0px 4px 20px rgba(221, 221, 233, 0.34);
+  z-index: 10;
+  border-radius: 8px;
+  width: 240px;
+  height: 270px;
+  overflow-y: auto; /* Enables scrolling */
+  background-color: rgb(13, 7, 41);
 
-  .emoji-scroll-wrapper {
-    max-height: 100%; /* Make sure the scroll area takes up the full height of the picker */
+  /* Scrollbar Styling */
+  &::-webkit-scrollbar {
+    width: 5px;
   }
-  .emoji-categories {
-    button {
-      filter: contrast(0);
-    }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(13, 7, 41); /* Background matches the container */
   }
-  .emoji-search {
-    background-color: transparent;
-    border-color: #9a86f3;
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(154, 134, 243, 0.8); /* Scrollbar color */
+    border-radius: 4px;
+    width: 5px;
   }
-  .emoji-group:before {
-    background-color: #080420;
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(154, 134, 243, 1); /* Slightly brighter on hover */
+  }
+
+  .epr_-xuzz9z,
+  .epr_346qu6,
+  .epr_-8ygbw8,
+  .epr_-oj65po,
+  .epr_-xm0i1t,
+  .epr_-oj65po:hover,
+  .epr_-2zpaw9,
+  .epr_-kg0voo {
+    background-color: rgb(13, 7, 41);
+    color: rgb(223, 223, 223);
+  }
+
+  .epr_-kg0voo {
+    z-index: var(--epr-preview-z-index);
+  }
+  .epr_-2zpaw9 {
+    border: 1px solid var(--epr-search-input-bg-color);
   }
 `;
+
