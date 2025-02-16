@@ -85,7 +85,7 @@ const Register = () => {
         <form onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
             <img src={Logo} alt="logo" />
-            <h1>snappy</h1>
+            <h1>Register</h1>
           </div>
           <input
             type="text"
