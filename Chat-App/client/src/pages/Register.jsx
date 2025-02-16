@@ -196,6 +196,29 @@ const FormContainer = styled.div`
       }
     }
   }
+    @media screen and (max-width: 480px) {
+    form {
+      padding: 0.9rem;
+    }
+    .brand img {
+      height: 2.5rem;
+    }
+    form .brand h1 {
+      font-size: 22px;
+    }
+    form span {
+      font-size: 15px;
+    }
+    form input {
+      font-size: 15px;
+      padding: 0.8rem;
+      margin-bottom: -0.6rem;
+    }
+    form button {
+      font-size: 0.8rem;
+      padding: 0.9rem 2rem;
+    }
+  }
 `;
 
 export default Register;
