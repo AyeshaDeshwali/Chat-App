@@ -14,8 +14,8 @@ export default function ChatInput({ handleSendMsg }) {
   };
 
   const handleEmojiClick = (emojiObject) => {
-    let message = msg;
-    message += emojiObject.emoji;
+    // let message = msg;
+    // message += emojiObject.emoji;
     setMsg((prevMsg) => prevMsg + emojiObject.emoji);
   };
 
@@ -81,16 +81,15 @@ const Container = styled.div`
   grid-template-columns: 5% 95%;
   background-color: rgba(19, 19, 63, 0.9);
   padding: 0 2rem;
+  width: ${({ isContactInfoOpen }) =>
+    isContactInfoOpen ? "calc(100% - 300px)" : "100%"};
+
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     padding: 0 1rem;
     gap: 1rem;
   }
 
   .button-container {
-    display: flex;
-    align-items: center;
-    color: white;
-    gap: 1rem;
     .emoji {
       position: relative;
       svg {
@@ -114,7 +113,6 @@ const Container = styled.div`
       border: none;
       padding-left: 1rem;
       font-size: 1.2rem;
-
       &::selection {
         background-color: #9a86f3;
       }
@@ -141,6 +139,24 @@ const Container = styled.div`
         font-size: 2rem;
         color: white;
       }
+    }
+  }
+  @media screen and (max-width: 480px) {
+    grid-template-rows: 15% 75% 10%;
+
+    .chat-messages {
+      padding-bottom: 60px; /* Input box ke liye space */
+    }
+
+    .chat-input {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      padding: 10px;
+    }
+    .emoji {
+      display: none; /* Sirf emoji icon aur picker hide ho jayega */
     }
   }
 `;
@@ -194,4 +210,3 @@ const EmojiPickerWrapper = styled.div`
     border: 1px solid var(--epr-search-input-bg-color);
   }
 `;
-
