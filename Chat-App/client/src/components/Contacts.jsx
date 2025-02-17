@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Logo from "../assets/logo.svg";
-import Logout from "./Logout";
-import { useNavigate } from "react-router-dom";
 
 export default function Contacts({ contacts, changeChat, handleLogout }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -12,7 +10,6 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null); // Reference for dropdown
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-  const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
       const storedData = localStorage.getItem(
@@ -97,9 +94,10 @@ export default function Contacts({ contacts, changeChat, handleLogout }) {
           </div>
 
           <div className="search-box">
+            <i className="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Search by name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -268,18 +266,26 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     padding: 10px;
-
+    position: relative;
+    i {
+      position: absolute;
+      left: 35px; /* Position the icon inside the input field */
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgb(131, 131, 136);
+      font-size: 15px;
+      pointer-events: none; /* Prevent the icon from being clickable */
+    }
     input {
       font-family: "Arial", sans-serif;
       font-weight: 600;
       width: 93%;
       height: 34px;
-      padding: 8px;
+      padding: 8px 8px 8px 50px;
       border-radius: 8px;
       border: none;
       font-size: 16px;
       background-color: rgba(24, 24, 66, 0.9);
-
       // background-color: rgb(32, 32, 68);
       color: white;
       outline: none;
@@ -319,6 +325,7 @@ const Container = styled.div`
 
       .avatar img {
         height: 3rem;
+
         border-radius: 50%;
       }
 
@@ -345,13 +352,15 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    padding: 15px;
+    padding: 25px;
     position: absolute;
     bottom: -45px;
     width: 100%;
 
     .avatar img {
       height: 4rem;
+      margin-left: -1rem;
+      margin-top: -0.7rem;
       border-radius: 50%;
     }
 
@@ -423,5 +432,51 @@ const Container = styled.div`
     border: none;
     border-radius: 50px;
     font-size: 17px;
+  }
+
+  @media screen and (max-width: 480px) {
+    .current-user {
+      margin-bottom: -4.8vh;
+    }
+    .brand h3 {
+      margin-left: -48%;
+    }
+    .brand img {
+      height: 2.3rem;
+      margin-left: -8px;
+    }
+    .search-box input {
+      width: 99%;
+      font-size: 15px;
+      border-radius: 30px;
+    }
+
+    .menu-container {
+      width: auto; /* Allow the width to adjust dynamically */
+      margin-left: 30px; /* Ensure the icon isn't too close to the edge */
+    }
+
+    .menu-container .menu-icon {
+      margin-right: -10px; /* Reset margin-left to avoid extra shift */
+      width: 30px; /* Keep the icon's size consistent */
+      height: 30px; /* Ensure the icon stays within a square container */
+    }
+
+    .contacts .contact {
+      background-color: #ffffff34;
+      min-height: 4rem;
+      cursor: pointer;
+      width: 94%;
+      border-radius: 0.5rem;
+      padding: 10px;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      transition: 0.3s ease-in-out;
+    }
+    .dropdown {
+      right: -8px;
+      width: 180px;
+    }
   }
 `;
