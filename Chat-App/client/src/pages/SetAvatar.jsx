@@ -162,7 +162,7 @@ const Container = styled.div`
       background-color: #997af0;
     }
   }
-  
+
   @media (max-width: 768px) {
     .avatars {
       grid-template-columns: repeat(2, 1fr);
@@ -190,15 +190,17 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 0.3rem; /* Avatars के बीच में कम gap */
+      gap: 0.2rem; /* Avatars के बीच में कम gap */
       flex-wrap: nowrap; /* Avatars को एक ही लाइन में रखने के लिए */
     }
 
     .avatar {
       border: 0.2rem solid transparent;
       padding: 0.2rem;
+      width: 81px;
+      height: 81px;
       border-radius: 50%;
-      transition: 0.3s ease-in-out;
+      transition: 0.2s ease-in-out;
     }
 
     .avatar img {
@@ -207,6 +209,8 @@ const Container = styled.div`
     }
 
     .avatar.selected {
+      width: 81px;
+      height: 81px;
       border: 0.2rem solid #4e0eff; /* Selected avatar को highlight किया */
     }
 
