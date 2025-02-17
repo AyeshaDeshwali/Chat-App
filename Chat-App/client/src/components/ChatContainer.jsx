@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import ChatInput from "./ChatInput";
-import { v4 as uuidv4 } from "uuid";
-import { ToastContainer, toast } from "react-toastify";
+import uuidv4 from "uuid/dist/v4";
 
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import {
   sendMessageRoute,
@@ -11,12 +11,18 @@ import {
   clearChatRoute,
 } from "../utils/APIRoutes";
 
-export default function ChatContainer({ currentChat, currentUser, socket }) {
+export default function ChatContainer({
+  currentChat,
+  currentUser,
+  socket,
+  hideHeader,
+}) {
   const [messages, setMessages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const scrollRef = useRef();
+  const scrollRef = useRef(null);
+  const [isContactInfoOpen, setIsContactInfoOpen] = useState(false);
 
   const handleSendMsg = async (msg) => {
     await axios.post(sendMessageRoute, {
@@ -36,18 +42,22 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      if (currentChat) {
-        const response = await axios.get(getAllMessagesRoute, {
-          params: {
-            from: currentUser._id,
-            to: currentChat._id,
-          },
-        });
-        setMessages(response.data);
+      if (currentChat && currentUser?._id) {
+        try {
+          const response = await axios.get(getAllMessagesRoute, {
+            params: {
+              from: currentUser._id,
+              to: currentChat._id,
+            },
+          });
+          setMessages(response.data);
+        } catch (error) {
+          console.error("Error fetching messages:", error);
+        }
       }
     };
     fetchMessages();
-  }, [currentChat, currentUser]);
+  }, [currentChat, currentUser._id]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -64,27 +74,24 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
-
   useEffect(() => {
-    if (socket.current) {
-      const handleMessageReceive = ({ message, from }) => {
-        setMessages((prev) => [
-          ...prev,
-          { fromSelf: from === currentUser._id, message },
-        ]);
-      };
+    if (!socket?.current) return;
 
-      socket.current.on("msg-recieve", handleMessageReceive);
+    const socketInstance = socket.current; // Store in a variable
 
-      return () => {
-        socket.current.off("msg-recieve", handleMessageReceive);
-      };
-    }
-  }, [socket, currentChat]);
+    const handleMessageReceive = ({ message, from }) => {
+      setMessages((prev) => [
+        ...prev,
+        { fromSelf: from === currentUser._id, message },
+      ]);
+    };
 
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    socketInstance.on("msg-recieve", handleMessageReceive);
+
+    return () => {
+      socketInstance.off("msg-recieve", handleMessageReceive);
+    };
+  }, [currentChat, currentUser._id, socket]); // Added dependencies
 
   const handleClearChat = async () => {
     setIsModalOpen(true); // Open the confirmation modal
@@ -117,53 +124,52 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
     draggable: true,
     theme: "dark",
   };
+
   return (
     <>
       {currentChat && (
         <Container>
-          <div className="chat-header">
-            <div className="user-details">
-              <div className="avatar">
-                <img src={currentChat?.avatarImage} alt="Avatar" />
-              </div>
-              <div className="username">
-                <h3>{currentChat?.username || "Unknown User"}</h3>
-              </div>
-            </div>
-
-            <div className="menu-container" ref={dropdownRef}>
-              <i
-                className={`fa-solid fa-ellipsis-vertical menu-icon ${
-                  isMenuOpen ? "active" : ""
-                }`}
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              ></i>
-
-              {isMenuOpen && (
-                <div className="dropdown">
-                  <ul>
-                    <li onClick={() => alert("Contact Info Clicked")}>
-                      Contact Info
-                    </li>
-                    <li onClick={() => alert("Select Messages Clicked")}>
-                      Select Messages
-                    </li>
-                    <li onClick={() => alert("Add to Favorites Clicked")}>
-                      Add to Favorites
-                    </li>
-                    <li onClick={() => alert("Close Chat Clicked")}>
-                      Close Chat
-                    </li>
-                    <li onClick={() => alert("Block Clicked")}>Block</li>
-                    <li onClick={handleClearChat}>Clear Chat</li>
-                    <li onClick={() => alert("Delete Chat Clicked")}>
-                      Delete Chat
-                    </li>
-                  </ul>
+          {!hideHeader && (
+            <div className="chat-header">
+              <div className="user-details">
+                <div className="avatar">
+                  <img src={currentChat?.avatarImage} alt="Avatar" />
                 </div>
-              )}
+                <div className="username">
+                  <h3>{currentChat?.username || "Unknown User"}</h3>
+                </div>
+              </div>
+
+              <div className="menu-container" ref={dropdownRef}>
+                <i
+                  className={`fa-solid fa-ellipsis-vertical menu-icon ${
+                    isMenuOpen ? "active" : ""
+                  }`}
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                ></i>
+
+                {isMenuOpen && (
+                  <div className="dropdown">
+                    <ul>
+                      <li onClick={() => setIsContactInfoOpen(true)}>
+                        Contact Info
+                      </li>
+                      <li onClick={() => alert("Select Messages Clicked")}>
+                        Select Messages
+                      </li>
+                      <li onClick={() => alert("Add to Favorites Clicked")}>
+                        Add to Favorites
+                      </li>
+                      <li>Close Chat</li>
+                      <li onClick={() => alert("Block Clicked")}>Block</li>
+                      <li onClick={handleClearChat}>Clear Chat</li>
+                      <li>Delete Chat</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="chat-messages">
             {messages.map((message) => (
@@ -200,16 +206,88 @@ export default function ChatContainer({ currentChat, currentUser, socket }) {
           )}
         </Container>
       )}
-      <ToastContainer />
+
+      {isContactInfoOpen && (
+        <ContactInfoSidebar isContactInfoOpen={isContactInfoOpen}>
+          <div className="contact-header">
+            <button
+              className="close-btn"
+              onClick={() => setIsContactInfoOpen(false)}
+            >
+              X
+            </button>
+            <h3>Contact Info</h3>
+            <i className="fa-solid fa-pen"></i>
+          </div>
+          <div className="contact-body">
+            <img
+              src={currentChat?.avatarImage}
+              alt="Avatar"
+              className="contact-avatar"
+            />
+            <h4>{currentChat?.username}</h4>
+          </div>
+        </ContactInfoSidebar>
+      )}
+      <ToastContainer {...toastOptions} />
     </>
   );
 }
 
+const ContactInfoSidebar = styled.div`
+  position: absolute;
+  right: 144px;
+  top: 70px;
+  width: 300px;
+  height: 84.6vh;
+  border-left: 1px solid rgba(138, 134, 134, 0.49);
+  background: rgb(22 22 78);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  .contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .contact-body {
+    text-align: center;
+  }
+
+  .contact-avatar {
+    width: 200px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.82);
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  .contact-body h4 {
+    margin-top: 10px;
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+`;
 const Container = styled.div`
   display: grid;
   padding-top: 1rem;
   grid-template-rows: 10% 80% 10%;
   gap: 0.1rem;
+
   overflow: hidden;
   position: relative;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
@@ -348,6 +426,15 @@ const Container = styled.div`
       }
     }
   }
+  @media screen and (max-width: 480px) {
+    .dropdown {
+      right: -8px;
+      width: 180px;
+    }
+    .chat-messages .message {
+      max-width: 100%;
+    }
+  }
 `;
 const Modal = styled.div`
   position: fixed;
@@ -428,5 +515,21 @@ const Modal = styled.div`
 
   .modal-buttons button:hover {
     opacity: 0.8;
+  }
+  @media screen and (max-width: 480px) {
+    .modal-content {
+      width: 90%; /* Reduce width on small screens */
+      padding: 15px; /* Reduce padding */
+    }
+
+    .modal-buttons {
+      width: 100%; /* Make buttons fill the width */
+      margin-left: 0; /* Remove left margin */
+    }
+
+    .modal-buttons button {
+      padding: 8px; /* Adjust button padding */
+      font-size: 12px; /* Reduce font size */
+    }
   }
 `;
