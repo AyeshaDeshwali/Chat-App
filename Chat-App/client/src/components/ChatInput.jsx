@@ -141,7 +141,6 @@ const Container = styled.div`
       }
     }
   }
- 
   @media screen and (max-width: 480px) {
     grid-template-rows: 15% 75% 10%;
     height: 58px;
@@ -165,7 +164,7 @@ const Container = styled.div`
       color: white;
     }
     .emoji {
-      display: none; 
+      display: none; /* Sirf emoji icon aur picker hide ho jayega */
     }
   }
 `;
