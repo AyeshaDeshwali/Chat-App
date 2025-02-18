@@ -451,7 +451,9 @@ const Container = styled.div`
       font-size: 15px;
       border-radius: 30px;
     }
-
+  .search-box i {
+      left: 27px; 
+    }
     .menu-container {
       width: auto; /* Allow the width to adjust dynamically */
       margin-left: 30px; /* Ensure the icon isn't too close to the edge */
