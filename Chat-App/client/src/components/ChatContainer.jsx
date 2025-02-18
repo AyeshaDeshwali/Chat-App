@@ -426,12 +426,42 @@ const Container = styled.div`
     }
   }
   @media screen and (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    overflow: hidden;
+    position: relative;
+
     .dropdown {
       right: -8px;
       width: 180px;
     }
+
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-bottom: 60px; /* Adjust this value for better visibility */
+      max-height: calc(100vh - 60px);
+      padding: 1rem 0rem;
+    }
+
     .chat-messages .message {
-      max-width: 100%;
+      max-width: 90%;
+    }
+
+    .input-container {
+      position: fixed; /* Fix the input at the bottom */
+      bottom: 0; /* Make it stick to the bottom */
+      left: 0;
+      width: 100%;
+      background: rgba(19, 19, 63, 0.9);
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 5;
+      /* No need to manually adjust bottom value as it's fixed at the bottom now */
     }
   }
 `;
