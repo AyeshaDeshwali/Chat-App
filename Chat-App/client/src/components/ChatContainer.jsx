@@ -426,7 +426,7 @@ const Container = styled.div`
     }
   }
  
-  @media screen and (max-width: 480px) {
+    @media screen and (max-width: 480px) {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -439,7 +439,7 @@ const Container = styled.div`
       width: 180px;
     }
 
-.recieved {
+    .recieved {
       margin-left: 1rem;
     }
 
@@ -452,6 +452,7 @@ const Container = styled.div`
       padding-bottom: 60px; /* Adjust this value for better visibility */
       max-height: calc(100vh - 60px);
       padding: 1rem 0rem;
+      margin-top: -80px;
     }
 
     .chat-messages .message {
@@ -461,15 +462,19 @@ const Container = styled.div`
     .input-container {
       position: fixed; /* Fix the input at the bottom */
       bottom: 0; /* Make it stick to the bottom */
-      left: 0;
-      width: 100%;
+      left: 5px;
+      width: 97%;
       background: rgba(19, 19, 63, 0.9);
-      padding: 0.5rem;
+      padding: 0.4rem 0.6rem;
       display: flex;
       align-items: center;
       gap: 1rem;
       z-index: 5;
       /* No need to manually adjust bottom value as it's fixed at the bottom now */
+    }
+
+    .input-container button {
+      padding: 0.3rem 1.7rem;
     }
   }
 `;
