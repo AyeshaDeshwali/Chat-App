@@ -141,9 +141,13 @@ const Container = styled.div`
       }
     }
   }
+ 
   @media screen and (max-width: 480px) {
     grid-template-rows: 15% 75% 10%;
-
+    height: 58px;
+    background-color: rgb(105, 85, 192);
+    margin-top: 65vh;
+    padding: 40px;
     .chat-messages {
       padding-bottom: 60px; /* Input box ke liye space */
     }
@@ -155,8 +159,13 @@ const Container = styled.div`
       background: white;
       padding: 10px;
     }
+
+    .input-container button svg {
+      font-size: 1.6rem;
+      color: white;
+    }
     .emoji {
-      display: none; /* Sirf emoji icon aur picker hide ho jayega */
+      display: none; 
     }
   }
 `;
