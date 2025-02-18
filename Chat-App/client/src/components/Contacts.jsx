@@ -436,8 +436,14 @@ const Container = styled.div`
 
   @media screen and (max-width: 480px) {
     .current-user {
-        margin-bottom: -6vh;
-      padding: 15px;
+      margin-bottom: -8.2vh;
+      padding: 18px;
+
+      .avatar img {
+        height: 3rem;
+        margin-left: -1rem;
+        border-radius: 50%;
+      }
     }
     .brand h3 {
       margin-left: -48%;
