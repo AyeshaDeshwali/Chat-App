@@ -464,7 +464,6 @@ const Container = styled.div`
       bottom: 0; /* Make it stick to the bottom */
       left: 5px;
       width: 97%;
-      background: rgba(19, 19, 63, 0.9);
       padding: 0.4rem 0.6rem;
       display: flex;
       align-items: center;
