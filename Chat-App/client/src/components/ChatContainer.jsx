@@ -425,8 +425,7 @@ const Container = styled.div`
       }
     }
   }
- 
-    @media screen and (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
