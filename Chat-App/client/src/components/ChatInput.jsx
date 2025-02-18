@@ -209,4 +209,26 @@ const EmojiPickerWrapper = styled.div`
   .epr_-2zpaw9 {
     border: 1px solid var(--epr-search-input-bg-color);
   }
+  
+  @media screen and (max-width: 480px) {
+    grid-template-rows: 15% 75% 10%;
+    height: 58px;
+    background-color: rgb(105, 85, 192);
+    margin-top: 65vh;
+    padding: 40px;
+    .chat-messages {
+      padding-bottom: 60px; /* Input box ke liye space */
+    }
+
+    .chat-input {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      padding: 10px;
+    }
+    .emoji {
+      display: none; /* Sirf emoji icon aur picker hide ho jayega */
+    }
+  }
 `;
