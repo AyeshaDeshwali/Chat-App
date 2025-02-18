@@ -436,7 +436,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 480px) {
     .current-user {
-      margin-bottom: -8.2vh;
+      margin-bottom: -7vh;
       padding: 18px;
 
       .avatar img {
