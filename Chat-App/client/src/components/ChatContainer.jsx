@@ -425,6 +425,7 @@ const Container = styled.div`
       }
     }
   }
+ 
   @media screen and (max-width: 480px) {
     display: flex;
     flex-direction: column;
@@ -438,6 +439,9 @@ const Container = styled.div`
       width: 180px;
     }
 
+    .recieved {
+      margin-left: 2rem;
+    }
     .chat-messages {
       flex-grow: 1;
       overflow-y: auto;
