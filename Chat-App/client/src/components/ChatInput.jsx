@@ -146,7 +146,7 @@ const Container = styled.div`
     grid-template-rows: 15% 75% 10%;
     height: 58px;
     background-color: rgb(105, 85, 192);
-    margin-top: 65vh;
+    margin-top: 85vh;
     padding: 40px;
     .chat-messages {
       padding-bottom: 60px; /* Input box ke liye space */
