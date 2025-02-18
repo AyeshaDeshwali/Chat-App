@@ -439,8 +439,12 @@ const Container = styled.div`
       width: 180px;
     }
 
-    .recieved {
-      margin-left: 2rem;
+.recieved {
+      margin-left: 1rem;
+    }
+
+    .sended {
+      margin-left: 1rem;
     }
     .chat-messages {
       flex-grow: 1;
