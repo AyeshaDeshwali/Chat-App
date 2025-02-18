@@ -436,7 +436,8 @@ const Container = styled.div`
 
   @media screen and (max-width: 480px) {
     .current-user {
-      margin-bottom: -5.9vh;
+        margin-bottom: -8.8vh;
+      padding: 18px;
     }
     .brand h3 {
       margin-left: -48%;
