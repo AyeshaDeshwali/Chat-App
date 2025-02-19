@@ -449,7 +449,7 @@ const Container = styled.div`
       flex-grow: 1;
       overflow-y: auto;
       padding-bottom: 60px; /* Adjust this value for better visibility */
-      max-height: calc(100vh - 60px);
+      max-height: calc(100vh - 120px);
       padding: 1rem 0rem;
     }
 
