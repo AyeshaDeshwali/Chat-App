@@ -451,7 +451,6 @@ const Container = styled.div`
       padding-bottom: 60px; /* Adjust this value for better visibility */
       max-height: calc(100vh - 60px);
       padding: 1rem 0rem;
-      margin-top: -80px;
     }
 
     .chat-messages .message {
